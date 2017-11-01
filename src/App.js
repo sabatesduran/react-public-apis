@@ -49,7 +49,7 @@ class App extends Component {
         </header>
         <ul>
           <select name="categories" onChange={(e) => this.filterByCategory(e)}>
-            <option value=""></option>
+            <option value="">All</option>
             { this.state.categories.map((category, i) => <option key={i} value={category}>{category}</option>) }
           </select>
           {
