@@ -36,24 +36,43 @@ class App extends Component {
     });
   }
 
-  filterByCategory(e) {
-    let filtered = e.target.value === "" ? this.state.apis : this.state.apis.filter(api => api.Category === e.target.value)
+  filterByCategory(category, filtered_apis) {
+    return category === "" ? this.state.apis : this.state.apis.filter(api => api.Category === category);
+  }
+
+  filterByHTTPS(https, filtered_apis) {
+    return https ? this.state.filtered.filter(api => api.HTTPS === https) : filtered_apis;
+  }
+
+  filterByAuth(auth, filtered_apis) {
+    return auth ? filtered_apis.filter(api => api.Auth !== null) : filtered_apis;
+  }
+  
+  async filter() {
+    let filtered = await this.filterByCategory(document.getElementById("categories").value, this.state.apis);
+    filtered = await this.filterByHTTPS(document.getElementById("https").checked, filtered);
+    filtered = await this.filterByAuth(document.getElementById("auth").checked, filtered);
     this.setState({ filtered: filtered });
   }
 
   render() {
+    const { categories, filtered } = this.state;
+
     return (
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">React - Public API's</h1>
         </header>
         <ul>
-          <select name="categories" onChange={(e) => this.filterByCategory(e)}>
+          <select id="categories" onChange={(e) => this.filter()}>
             <option value="">All</option>
-            { this.state.categories.map((category, i) => <option key={i} value={category}>{category}</option>) }
+            { categories.map((category, i) => <option key={i} value={category}>{category}</option>) }
           </select>
+          <input id="https" type="checkbox" onChange={(e) => this.filter()}/> HTTPS
+          <input id="auth" type="checkbox" onChange={(e) => this.filter()}/> Auth
+          <p>Quantity: {filtered.length}</p>
           {
-            this.state.filtered.map((api, i) => {
+            filtered.map((api, i) => {
               return (
                 <li key={i}>
                   {api.API}
@@ -62,7 +81,7 @@ class App extends Component {
                     <li>Category: {api.Category}</li>
                     <li>Link: {api.Link}</li>
                     <li>HTTPS: {api.HTTPS ? "Yes" : "No"}</li>
-                    <li>Auth: {api.Auth ? "Yes" : "No"}</li>
+                    <li>Auth: {api.Auth ? api.Auth : "No"}</li>
                   </ul>
                 </li>
               )
