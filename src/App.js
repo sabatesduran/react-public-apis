@@ -40,8 +40,13 @@ class App extends Component {
     return category === "" ? this.state.apis : this.state.apis.filter(api => api.Category === category);
   }
 
+  filterByNameOrDescription(text, filtered_apis) {
+    text = text.toLowerCase();
+    return filtered_apis.filter(api => api.API.toLowerCase().includes(text) || api.Description.toLowerCase().includes(text));
+  }
+
   filterByHTTPS(https, filtered_apis) {
-    return https ? this.state.filtered.filter(api => api.HTTPS === https) : filtered_apis;
+    return https ? filtered_apis.filter(api => api.HTTPS === https) : filtered_apis;
   }
 
   filterByAuth(auth, filtered_apis) {
@@ -50,6 +55,7 @@ class App extends Component {
   
   async filter() {
     let filtered = await this.filterByCategory(document.getElementById("categories").value, this.state.apis);
+    filtered = await this.filterByNameOrDescription(document.getElementById("search").value, filtered);
     filtered = await this.filterByHTTPS(document.getElementById("https").checked, filtered);
     filtered = await this.filterByAuth(document.getElementById("auth").checked, filtered);
     this.setState({ filtered: filtered });
@@ -64,6 +70,7 @@ class App extends Component {
           <h1 className="App-title">React - Public API's</h1>
         </header>
         <ul>
+          <input id="search" type="text" onChange={(e) => this.filter()}/>
           <select id="categories" onChange={(e) => this.filter()}>
             <option value="">All</option>
             { categories.map((category, i) => <option key={i} value={category}>{category}</option>) }
@@ -72,20 +79,23 @@ class App extends Component {
           <input id="auth" type="checkbox" onChange={(e) => this.filter()}/> Auth
           <p>Quantity: {filtered.length}</p>
           {
-            filtered.map((api, i) => {
-              return (
-                <li key={i}>
-                  {api.API}
-                  <ul>
-                    <li>Description: {api.Description}</li>
-                    <li>Category: {api.Category}</li>
-                    <li>Link: {api.Link}</li>
-                    <li>HTTPS: {api.HTTPS ? "Yes" : "No"}</li>
-                    <li>Auth: {api.Auth ? api.Auth : "No"}</li>
-                  </ul>
-                </li>
-              )
-            })
+            filtered.length ? 
+              filtered.map((api, i) => {
+                return (
+                  <li key={i}>
+                    {api.API}
+                    <ul>
+                      <li>Description: {api.Description}</li>
+                      <li>Category: {api.Category}</li>
+                      <li>Link: {api.Link}</li>
+                      <li>HTTPS: {api.HTTPS ? "Yes" : "No"}</li>
+                      <li>Auth: {api.Auth ? api.Auth : "No"}</li>
+                    </ul>
+                  </li>
+                )
+              })
+            :
+            <p>No Api's found.</p>
           }
         </ul>
       </div>
