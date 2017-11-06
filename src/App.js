@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import Grid from 'material-ui/Grid';
+
+import Bar from './Bar';
+import ApiCard from './ApiCard';
 
 class App extends Component {
 
@@ -66,10 +70,8 @@ class App extends Component {
 
     return (
       <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">React - Public API's</h1>
-        </header>
-        <ul>
+        <Bar />
+        <div style={{ padding: 20 }}>
           <input id="search" type="text" onChange={(e) => this.filter()}/>
           <select id="categories" onChange={(e) => this.filter()}>
             <option value="">All</option>
@@ -78,26 +80,22 @@ class App extends Component {
           <input id="https" type="checkbox" onChange={(e) => this.filter()}/> HTTPS
           <input id="auth" type="checkbox" onChange={(e) => this.filter()}/> Auth
           <p>Quantity: {filtered.length}</p>
+
+          <Grid container spacing={24}>
           {
             filtered.length ? 
-              filtered.map((api, i) => {
-                return (
-                  <li key={i}>
-                    {api.API}
-                    <ul>
-                      <li>Description: {api.Description}</li>
-                      <li>Category: {api.Category}</li>
-                      <li>Link: {api.Link}</li>
-                      <li>HTTPS: {api.HTTPS ? "Yes" : "No"}</li>
-                      <li>Auth: {api.Auth ? api.Auth : "No"}</li>
-                    </ul>
-                  </li>
-                )
-              })
+            filtered.map((api, i) => {
+              return (
+                <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+                  <ApiCard key={i} api={api} />
+                </Grid>
+              )
+            })
             :
             <p>No Api's found.</p>
           }
-        </ul>
+          </Grid>
+        </div>
       </div>
     );
   }
