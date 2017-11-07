@@ -17,7 +17,7 @@ class Bar extends Component {
         <AppBar position="fixed">
           <Toolbar>
             <Typography type="title" color="inherit" style={styles.flex}>
-              React - Public API's
+              Public API's
             </Typography>
 
             <Button color="contrast" href="https://github.com/sabatesduran/react-public-apis">
