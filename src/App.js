@@ -24,7 +24,20 @@ class App extends Component {
     await fetch(repo).then(function(response) {
       return response.json();
     }).then(function(json) {
-      apis = json['entries'];
+      // Sort API's by name
+      apis = json['entries'].sort( (a, b) => { 
+        let  apiA = a.API.toUpperCase();
+        let  apiB = b.API.toUpperCase();
+
+        if (apiA < apiB) {
+          return -1;
+        }
+        if (apiA > apiB) {
+          return 1;
+        }
+
+        return 0;
+      });
 
       // Get unique categories
       categories = [...new Set(apis.map(api => api.Category))];
