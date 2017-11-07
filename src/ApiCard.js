@@ -1,57 +1,63 @@
 import React, { Component } from 'react';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import Typography from 'material-ui/Typography';
 import LinkIcon from 'material-ui-icons/Link';
+import HttpsIcon from 'material-ui-icons/Https';
+import { red, green, grey } from 'material-ui/colors';
 
 class ApiCard extends Component {
   render() {
     const { api } = this.props;
-    const classes = theme => ({
+    
+    const classes = {
       card: {
-        // minWidth: 275,
+        minHeight: 260,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
       },
-      bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
-      },
-      title: {
-        marginBottom: 16,
-        fontSize: 14,
-        color: theme.palette.text.secondary,
-      },
-      pos: {
+      category: {
         marginBottom: 12,
-        color: theme.palette.text.secondary,
+        color: grey[500],
       },
-    });
+      actions: {
+        justifyContent: "space-around",
+      },
+      flexCenter: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      link: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: grey[500],
+      }
+    };
 
     return (
       <div>
-        <Card className={classes.card}>
+        <Card style={classes.card}>
           <CardContent>
-            <Typography type="headline" component="h2">
-              {api.API}
-            </Typography>
-            <Typography type="body1" className={classes.pos}>
-              {api.Category}
-            </Typography>
-            <Typography component="p">
-              {api.Description}
-            </Typography>
+            <h3>{api.API}</h3>
+            <p style={classes.category}>{api.Category}</p>
+            <p>{api.Description}</p>
           </CardContent>
-          <CardActions>
-            <Typography type="body1" className={classes.title}>
-              HTTPS: {api.HTTPS ? "YES" : "NO"}
-            </Typography>
-            <Typography type="body1" className={classes.title}>
-              AUTH: {api.Auth ? api.Auth : "NO"}
-            </Typography>
-            <IconButton aria-label="External link">
-              <LinkIcon />
-            </IconButton>
+
+          <CardActions style={classes.actions}>
+            <div style={classes.flexCenter}>
+              <span>HTTPS:</span>
+              <HttpsIcon style={ { color: api.HTTPS ? green[500] : red[500] } } /> 
+            </div>
+
+            <div style={classes.flexCenter}>
+              <span>AUTH:</span>
+              <span style={ { color: api.Auth ? green[500] : red[500] } }>
+                &nbsp; {api.Auth ? api.Auth : "NO"}
+              </span>
+            </div>
+
+            <a style={classes.link} href={api.Link} target="_blank"><LinkIcon /></a>
           </CardActions>
         </Card>
       </div>

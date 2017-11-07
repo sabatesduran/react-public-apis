@@ -86,8 +86,8 @@ class App extends Component {
             filtered.length ? 
             filtered.map((api, i) => {
               return (
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-                  <ApiCard key={i} api={api} />
+                <Grid key={i} item xs={12} sm={6} md={4} lg={3} xl={2}>
+                  <ApiCard api={api} />
                 </Grid>
               )
             })
