@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Typography from 'material-ui/Typography';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import LinkIcon from 'material-ui-icons/Link';
 import HttpsIcon from 'material-ui-icons/Https';
@@ -10,7 +11,7 @@ class ApiCard extends Component {
     
     const classes = {
       card: {
-        minHeight: 260,
+        minHeight: 220,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -39,25 +40,37 @@ class ApiCard extends Component {
       <div>
         <Card style={classes.card}>
           <CardContent>
-            <h3>{api.API}</h3>
-            <p style={classes.category}>{api.Category}</p>
-            <p>{api.Description}</p>
+            <Typography type="headline" component="h2">
+              {api.API}
+            </Typography>
+
+            <Typography component="p" style={classes.category}>
+              {api.Category}
+            </Typography>
+
+            <Typography component="p">
+              {api.Description}
+            </Typography>
           </CardContent>
 
           <CardActions style={classes.actions}>
-            <div style={classes.flexCenter}>
+
+            <Typography component="p" style={classes.flexCenter}>
               <span>HTTPS:</span>
               <HttpsIcon style={ { color: api.HTTPS ? green[500] : red[500] } } /> 
-            </div>
+            </Typography>
 
-            <div style={classes.flexCenter}>
+            <Typography component="p" style={classes.flexCenter}>
               <span>AUTH:</span>
               <span style={ { color: api.Auth ? green[500] : red[500] } }>
                 &nbsp; {api.Auth ? api.Auth : "NO"}
               </span>
-            </div>
+            </Typography>
 
-            <a style={classes.link} href={api.Link} target="_blank"><LinkIcon /></a>
+            <Typography component="p" style={classes.flexCenter}>
+              <a style={classes.link} href={api.Link} target="_blank"><LinkIcon /></a>
+            </Typography>
+            
           </CardActions>
         </Card>
       </div>
