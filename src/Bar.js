@@ -6,14 +6,23 @@ import Button from 'material-ui/Button';
 
 class Bar extends Component {
   render() {
+    const styles = {
+      flex: {
+        flex: 1,
+      }
+    }
+
     return (
       <div>
-        <AppBar position="static">
+        <AppBar position="fixed">
           <Toolbar>
-            <Typography type="title" color="inherit">
+            <Typography type="title" color="inherit" style={styles.flex}>
               React - Public API's
             </Typography>
-            <Button color="contrast">GITHUB</Button>
+
+            <Button color="contrast" href="https://github.com/sabatesduran/react-public-apis">
+              GITHUB
+            </Button>
           </Toolbar>
         </AppBar>
       </div>

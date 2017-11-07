@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import Typography from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
-
 import Bar from './Bar';
 import ApiCard from './ApiCard';
+import { FormControl } from 'material-ui/Form';
+import Input, { InputLabel } from 'material-ui/Input';
+import { MenuItem } from 'material-ui/Menu';
+import Select from 'material-ui/Select';
 
 class App extends Component {
 
@@ -70,29 +74,51 @@ class App extends Component {
     return auth ? filtered_apis.filter(api => api.Auth !== null) : filtered_apis;
   }
   
-  async filter() {
-    let filtered = await this.filterByCategory(document.getElementById("categories").value, this.state.apis);
-    filtered = await this.filterByNameOrDescription(document.getElementById("search").value, filtered);
-    filtered = await this.filterByHTTPS(document.getElementById("https").checked, filtered);
-    filtered = await this.filterByAuth(document.getElementById("auth").checked, filtered);
+  filter() {
+    let filtered = this.filterByCategory(document.getElementById("categories").value, this.state.apis);
+    filtered = this.filterByNameOrDescription(document.getElementById("search").value, filtered);
+    filtered = this.filterByHTTPS(document.getElementById("https").checked, filtered);
+    filtered = this.filterByAuth(document.getElementById("auth").checked, filtered);
     this.setState({ filtered: filtered });
   }
 
   render() {
     const { categories, filtered } = this.state;
 
+    const styles = {
+      appLayout: {
+        paddingTop: 64,
+      },
+      quantity: {
+        margin: "20px 0"
+      },
+    }
+
     return (
-      <div className="App">
+      <div style={styles.appLayout}>
         <Bar />
         <div style={{ padding: 20 }}>
-          <input id="search" type="text" onChange={(e) => this.filter()}/>
-          <select id="categories" onChange={(e) => this.filter()}>
-            <option value="">All</option>
-            { categories.map((category, i) => <option key={i} value={category}>{category}</option>) }
-          </select>
-          <input id="https" type="checkbox" onChange={(e) => this.filter()}/> HTTPS
-          <input id="auth" type="checkbox" onChange={(e) => this.filter()}/> Auth
-          <p>Quantity: {filtered.length}</p>
+          
+          <div className="filters">
+            <Input
+              placeholder="Search"
+              onChange={(e) => this.filter()} 
+              inputProps={{
+                'id': 'search',
+              }}
+            />
+              
+            <select id="categories" onChange={(e) => this.filter()}>
+              <option value="">All</option>
+              { categories.map((category, i) => <option key={i} value={category}>{category}</option>) }
+            </select>
+            <input id="https" type="checkbox" onChange={(e) => this.filter()}/> HTTPS
+            <input id="auth" type="checkbox" onChange={(e) => this.filter()}/> Auth
+          </div>
+          
+          <Typography type="title" color="inherit" style={styles.quantity}>
+            Quantity: {filtered.length}
+          </Typography>
 
           <Grid container spacing={24}>
           {
@@ -105,7 +131,9 @@ class App extends Component {
               )
             })
             :
-            <p>No Api's found.</p>
+            <Typography type="title" color="inherit">
+              No public API's found.
+            </Typography>
           }
           </Grid>
         </div>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Typography from 'material-ui/Typography';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
+import Button from 'material-ui/Button';
 import LinkIcon from 'material-ui-icons/Link';
 import HttpsIcon from 'material-ui-icons/Https';
 import { red, green, grey } from 'material-ui/colors';
@@ -67,9 +68,9 @@ class ApiCard extends Component {
               </span>
             </Typography>
 
-            <Typography component="p" style={classes.flexCenter}>
-              <a style={classes.link} href={api.Link} target="_blank"><LinkIcon /></a>
-            </Typography>
+            <Button href={api.Link} style={classes.link}>
+              <LinkIcon />
+            </Button>
             
           </CardActions>
         </Card>
