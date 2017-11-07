@@ -22,14 +22,20 @@ class ApiCard extends Component {
         color: grey[500],
       },
       actions: {
-        justifyContent: "space-around",
+        padding: "10px 20px",
+        justifyContent: "space-between",
       },
       flexCenter: {
+        minHeight: 60,
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
       },
       link: {
+        minWidth: 0,
+        maxWidth: 40,
+        maxHeight: 40,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -57,20 +63,23 @@ class ApiCard extends Component {
           <CardActions style={classes.actions}>
 
             <Typography component="p" style={classes.flexCenter}>
-              <span>HTTPS:</span>
-              <HttpsIcon style={ { color: api.HTTPS ? green[500] : red[500] } } /> 
+              <span>HTTPS</span>
+              <HttpsIcon style={ { color: api.HTTPS ? green[500] : red[500], minHeight: 40, display: "flex", alignItems: "center" } } /> 
             </Typography>
 
             <Typography component="p" style={classes.flexCenter}>
-              <span>AUTH:</span>
-              <span style={ { color: api.Auth ? green[500] : red[500] } }>
-                &nbsp; {api.Auth ? api.Auth : "NO"}
+              <span>AUTH</span>
+              <span style={ { color: api.Auth ? green[500] : red[500] , minHeight: 40, display: "flex", alignItems: "center"} }>
+                {api.Auth ? api.Auth : "NO"}
               </span>
             </Typography>
 
-            <Button href={api.Link} style={classes.link}>
-              <LinkIcon />
-            </Button>
+            <Typography component="p" style={classes.flexCenter}>
+              <span>LINK</span>
+              <Button href={api.Link} style={classes.link}>
+                <LinkIcon />
+              </Button>
+            </Typography>
             
           </CardActions>
         </Card>
