@@ -26,11 +26,11 @@ class App extends Component {
   }
 
   async componentWillMount() {
-    let repo = "http://publicapis.org/api/entries";
+    let apiURL = "https://publicapis.org/api/entries";
     let apis = [];
     let categories = [];
 
-    await fetch(repo)
+    await fetch(apiURL)
       .then(response => response.json())
       .then(json => {
         // Sort API's by name
