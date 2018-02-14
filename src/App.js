@@ -26,7 +26,7 @@ class App extends Component {
   }
 
   async componentWillMount() {
-    let apiURL = "https://publicapis.org/api/entries";
+    let apiURL = "https://api.publicapis.org/entries";
     let apis = [];
     let categories = [];
 
