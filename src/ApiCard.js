@@ -9,7 +9,7 @@ import { red, green, grey } from 'material-ui/colors';
 class ApiCard extends Component {
   render() {
     const { api } = this.props;
-    
+
     const classes = {
       card: {
         minHeight: 220,
@@ -64,7 +64,7 @@ class ApiCard extends Component {
 
             <Typography component="p" style={classes.flexCenter}>
               <span>HTTPS</span>
-              <HttpsIcon style={ { color: api.HTTPS ? green[500] : red[500], minHeight: 40, display: "flex", alignItems: "center" } } /> 
+              <HttpsIcon style={ { color: api.HTTPS ? green[500] : red[500], minHeight: 40, display: "flex", alignItems: "center" } } />
             </Typography>
 
             <Typography component="p" style={classes.flexCenter}>
@@ -75,12 +75,19 @@ class ApiCard extends Component {
             </Typography>
 
             <Typography component="p" style={classes.flexCenter}>
+              <span>CORS</span>
+              <span style={ { color: api.Cors === 'yes' ? green[500] : red[500] , minHeight: 40, display: "flex", alignItems: "center"} }>
+                {api.Cors ? api.Cors : ""}
+              </span>
+            </Typography>
+
+            <Typography component="p" style={classes.flexCenter}>
               <span>LINK</span>
               <Button href={api.Link} style={classes.link}>
                 <LinkIcon />
               </Button>
             </Typography>
-            
+
           </CardActions>
         </Card>
       </div>

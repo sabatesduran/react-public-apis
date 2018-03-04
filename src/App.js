@@ -18,8 +18,10 @@ class App extends Component {
       apis: [],
       filtered: [],
       categories: [],
+      corsOptions: [],
       category: "",
       search: "",
+      cors: "",
       https: false,
       auth: false
     };
@@ -29,6 +31,7 @@ class App extends Component {
     let apiURL = "https://api.publicapis.org/entries";
     let apis = [];
     let categories = [];
+    let corsOptions = [];
 
     await fetch(apiURL)
       .then(response => response.json())
@@ -51,15 +54,20 @@ class App extends Component {
         // Get unique categories
         categories = [...new Set(apis.map(api => api.Category))];
 
+        // Get CORS options
+        corsOptions = [...new Set(apis.map(api => api.Cors))];
+
         // Save data in localStorage
         localStorage.setItem("apis", JSON.stringify(apis));
         localStorage.setItem("categories", JSON.stringify(categories));
+        localStorage.setItem("corsOptions", JSON.stringify(corsOptions));
       });
 
     this.setState({
       apis: apis,
       filtered: apis,
-      categories: categories
+      categories: categories,
+      corsOptions: corsOptions
     });
   }
 
@@ -67,6 +75,12 @@ class App extends Component {
     return category === ""
       ? this.state.apis
       : this.state.apis.filter(api => api.Category === category);
+  }
+
+  filterByCors(cors, filtered_apis) {
+    return cors === ""
+      ? this.state.apis
+      : this.state.apis.filter(api => api.Cors === cors);
   }
 
   filterByNameOrDescription(text, filtered_apis) {
@@ -95,9 +109,9 @@ class App extends Component {
   }
 
   async filter() {
-    let { apis, category, search, https, auth } = this.state;
-    console.log(auth);
+    const { apis, category, cors, search, https, auth } = this.state;
     let filtered_apis = await this.filterByCategory(category, apis);
+    filtered_apis = await this.filterByCors(cors, filtered_apis);
     filtered_apis = await this.filterByNameOrDescription(search, filtered_apis);
     filtered_apis = await this.filterByHTTPS(https, filtered_apis);
     filtered_apis = await this.filterByAuth(auth, filtered_apis);
@@ -106,7 +120,7 @@ class App extends Component {
   }
 
   render() {
-    const { categories, filtered } = this.state;
+    const { categories, corsOptions, filtered } = this.state;
 
     const styles = {
       appLayout: {
@@ -170,6 +184,36 @@ class App extends Component {
                     {categories.map((category, i) => (
                       <MenuItem key={i} value={category}>
                         {category}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={6}
+                lg={3}
+                xl={2}
+                style={styles.gridFlex}
+              >
+                <FormControl style={{ width: "100%" }}>
+                  <InputLabel htmlFor="categories">CORS</InputLabel>
+                  <Select
+                    value={this.state.cors}
+                    onChange={e =>
+                      this.handleFilterValueChange("cors", e.target.value)
+                    }
+                    input={<Input id="cors" />}
+                  >
+                    <MenuItem value="">
+                      <em>All</em>
+                    </MenuItem>
+                    {corsOptions.map((option, i) => (
+                      <MenuItem key={i} value={option}>
+                        {option}
                       </MenuItem>
                     ))}
                   </Select>
